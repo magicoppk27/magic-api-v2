@@ -1,25 +1,18 @@
-// FILE: api/set-prediction.js
-// This is the complete, final code for this file.
-// Please replace the entire contents of your existing file with this.
-
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
-  // This block explicitly handles the "preflight" permission check from the browser.
+  // This block handles the "preflight" permission check from the browser
   if (req.method === 'OPTIONS') {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Or 'https://rodrigo.ie'
-    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Content-Type'
-    );
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     return res.status(200).end();
   }
 
   // Set headers for the actual POST request
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Or 'https://rodrigo.ie'
+  res.setHeader('Access-Control-Allow-Origin', '*');
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -29,10 +22,12 @@ export default async function handler(req, res) {
     if (!prediction) {
       return res.status(400).json({ error: 'Prediction value is missing.' });
     }
+    // This line SAVES the prediction
     await kv.set('prediction', prediction);
     return res.status(200).json({ message: `Prediction set to: ${prediction}` });
   } catch (error) {
-    console.error(error);
+    // --- NEW --- This will log the detailed error to Vercel
+    console.error("Detailed KV Error:", error);
     return res.status(500).json({ error: 'Failed to set prediction.' });
   }
 }
