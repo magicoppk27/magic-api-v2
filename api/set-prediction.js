@@ -1,6 +1,25 @@
+// FILE: api/set-prediction.js
+// This is the complete, final code for this file.
+// Please replace the entire contents of your existing file with this.
+
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
+  // This block explicitly handles the "preflight" permission check from the browser.
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Origin', '*'); // Or 'https://rodrigo.ie'
+    res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Content-Type'
+    );
+    return res.status(200).end();
+  }
+
+  // Set headers for the actual POST request
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', '*'); // Or 'https://rodrigo.ie'
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
