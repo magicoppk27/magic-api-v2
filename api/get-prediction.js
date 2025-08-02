@@ -13,7 +13,8 @@ export default async function handler(req, res) {
     const currentPrediction = prediction || "[No prediction set]";
     return res.status(200).json({ prediction: currentPrediction });
   } catch (error) {
-    console.error(error);
+    // --- NEW --- This will log the detailed error to Vercel
+    console.error("Detailed KV Error:", error);
     return res.status(500).json({ error: 'Failed to get prediction.' });
   }
 }
