@@ -1,9 +1,9 @@
 import { kv } from '@vercel/kv';
 
 export default async function handler(req, res) {
-  // This block ensures GET requests also have the correct permissions.
+  // Set CORS headers to be absolutely sure they are applied
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Allows any origin
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -16,3 +16,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Failed to get prediction.' });
   }
 }
+
